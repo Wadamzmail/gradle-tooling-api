@@ -1,0 +1,79 @@
+plugins {
+    id 'maven-publish'
+}
+
+group = 'com.github.wadamzmail.gradle'
+version = '9.2.1'
+
+def gradleToolingVersion = '9.2.1'
+def baseUrl = "https://repo.gradle.org/gradle/libs-releases/org/gradle/gradle-tooling-api/${gradleToolingVersion}"
+
+task downloadJars {
+    doLast {
+        mkdir 'build/libs'
+        
+        ant.get(src: "${baseUrl}/gradle-tooling-api-${gradleToolingVersion}.jar",
+                dest: "build/libs/gradle-tooling-api-${gradleToolingVersion}.jar")
+        
+        ant.get(src: "${baseUrl}/gradle-tooling-api-${gradleToolingVersion}-sources.jar",
+                dest: "build/libs/gradle-tooling-api-${gradleToolingVersion}-sources.jar")
+        
+        ant.get(src: "${baseUrl}/gradle-tooling-api-${gradleToolingVersion}-javadoc.jar",
+                dest: "build/libs/gradle-tooling-api-${gradleToolingVersion}-javadoc.jar")
+    }
+}
+
+task assemble {
+    dependsOn downloadJars
+    group = 'build'
+    description = 'Assembles the outputs of this project (downloads JARs)'
+}
+
+tasks.withType(PublishToMavenRepository) {
+    dependsOn downloadJars
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = project.group
+            artifactId = 'gradle-tooling-api'
+            version = project.version
+            
+            artifact file("build/libs/gradle-tooling-api-${gradleToolingVersion}.jar")
+            artifact file("build/libs/gradle-tooling-api-${gradleToolingVersion}-sources.jar"), {
+                classifier = 'sources'
+            }
+            artifact file("build/libs/gradle-tooling-api-${gradleToolingVersion}-javadoc.jar"), {
+                classifier = 'javadoc'
+            }
+            
+            pom {
+                name = 'Gradle Tooling API - Republished'
+                description = 'The Gradle Tooling API - Republished via JitPack'
+                url = 'https://github.com/Wadamzmail/tom-gradle-tooling-api'
+                
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                
+                developers {
+                    developer {
+                        id = 'Wadamzmail'
+                        name = 'AndroidIDE'
+                        url = 'https://github.com/Wadamzmail'
+                    }
+                }
+                
+                scm {
+                    connection = 'scm:git:git://github.com/Wadamzmail/gradle-tooling-api.git'
+                    developerConnection = 'scm:git:ssh://github.com/Wadamzmail/gradle-tooling-api.git'
+                    url = 'https://github.com/Wadamzmail/gradle-tooling-api'
+                }
+            }
+        }
+    }
+}

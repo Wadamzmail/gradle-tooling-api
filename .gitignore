@@ -1,0 +1,8 @@
+.gradle/
+build/
+downloaded-jars/
+*.jar
+!gradle/wrapper/gradle-wrapper.jar
+.acs/
+.androidide/
+.idea/
