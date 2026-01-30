@@ -2,7 +2,7 @@ plugins {
     id 'maven-publish'
 }
 
-group = 'com.github.wadamzmail.gradle'
+group = 'com.github.Wadamzmail'
 version = '9.2.1'
 
 def gradleToolingVersion = '9.2.1'
