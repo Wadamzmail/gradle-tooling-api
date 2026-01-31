@@ -2,7 +2,7 @@ plugins {
     id 'maven-publish'
 }
 
-group = 'com.github.Wadamzmail'
+group = 'io.github.wadamzmail'
 version = '9.2.1'
 
 def gradleToolingVersion = '9.2.1'
@@ -51,7 +51,7 @@ publishing {
             pom {
                 name = 'Gradle Tooling API - Republished'
                 description = 'The Gradle Tooling API - Republished via JitPack'
-                url = 'https://github.com/Wadamzmail/tom-gradle-tooling-api'
+                url = 'https://github.com/Wadamzmail/gradle-tooling-api'
                 
                 licenses {
                     license {
